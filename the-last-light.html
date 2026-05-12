@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Last Light &mdash; XPDevs Studio</title>
+  <link rel="icon" type="image/x-icon" href="logo/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    #player {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: #000;
+    }
+    #player.open { display: block; }
+    #closePlayer {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 2001;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.6);
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: Inter, sans-serif;
+      transition: background 0.2s, color 0.2s;
+      display: none;
+    }
+    #closePlayer.show { display: block; }
+    #closePlayer:hover {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+    .body-hidden { overflow: hidden; }
+  </style>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.module.min.js"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <nav class="topbar">
+    <div class="topbar-brand">
+      <a href="index.html">
+        <img src="logo/XPDevs.png" alt="XPDevs Studio">
+        XPDevs Studio
+      </a>
+    </div>
+    <div class="topbar-center">
+      <a href="index.html" class="topbar-link">Home</a>
+      <a href="films.html" class="topbar-link">Films</a>
+      <a href="about.html" class="topbar-link">About</a>
+      <a href="news.html" class="topbar-link">News</a>
+    </div>
+    <div class="topbar-actions">
+      <a href="https://xpdevs.github.io" target="_blank" rel="noopener" class="external-link">XPDevs<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="external-icon" width="14" height="14"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="6" x2="20" y2="6"/>
+          <line x1="4" y1="12" x2="20" y2="12"/>
+          <line x1="4" y1="18" x2="20" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html" class="topbar-link">Home</a>
+    <a href="films.html" class="topbar-link">Films</a>
+    <a href="about.html" class="topbar-link">About</a>
+    <a href="news.html" class="topbar-link">News</a>
+    <a href="https://xpdevs.github.io" target="_blank" rel="noopener" class="topbar-link">XPDevs</a>
+  </div>
+
+  <section class="film-detail-hero">
+    <div class="hero-bg" style="background: linear-gradient(135deg, #0a0e14 0%, #1a1018 40%, #0d1219 100%);"></div>
+    <div class="hero-content">
+      <span class="hero-badge">Short Film</span>
+      <h1 class="hero-title">The Last Light</h1>
+      <p class="hero-subtitle">A lantern sits on an old wooden table. A moth circles the flame. Two minutes.</p>
+      <div class="hero-meta">
+        <span>2026</span>
+        <span>Directed by James Turner</span>
+      </div>
+      <button class="hero-btn" id="playBtn">
+        Play Film
+        <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+          <polygon points="8,5 19,12 8,19"/>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <div class="film-detail-body">
+    <div class="film-detail-section">
+      <h2>Synopsis</h2>
+      <p>A lantern on a table in a dark room. A moth circling the flame. Two minutes of light and shadow and a moth that will not stop.</p>
+      <p><em>The Last Light</em> was made with code. No dialogue. No plot. Just a lantern, a moth, and the dark.</p>
+    </div>
+
+    <div class="film-detail-section">
+      <h2>Details</h2>
+      <div class="film-credits">
+        <div class="credit-item">
+          <span class="credit-role">Director</span>
+          <span class="credit-name">James Turner</span>
+        </div>
+        <div class="credit-item">
+          <span class="credit-role">Year</span>
+          <span class="credit-name">2026</span>
+        </div>
+        <div class="credit-item">
+          <span class="credit-role">Runtime</span>
+          <span class="credit-name">2 Minutes</span>
+        </div>
+        <div class="credit-item">
+          <span class="credit-role">Genre</span>
+          <span class="credit-name">Experimental</span>
+        </div>
+        <div class="credit-item">
+          <span class="credit-role">Format</span>
+          <span class="credit-name">Generative Animation</span>
+        </div>
+        <div class="credit-item">
+          <span class="credit-role">Status</span>
+          <span class="credit-name">Released</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="film-detail-section">
+      <h2>About This Film</h2>
+      <p>We wanted to see if two minutes of code could feel like a film. The scene is simple. A lantern. A table. A moth. The light moves. The shadows move. Thats it.</p>
+      <p>We use AI to build the code. But the idea, the composition, the timing. That was a person.</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="logo/XPDevs.png" alt="XPDevs">
+        <p>XPDevs Studio is an XPDevs company. We use AI to build the code behind our films. Every story is written by a person.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Studio</h4>
+        <a href="about.html">About</a>
+        <a href="https://xpdevs.github.io" target="_blank" rel="noopener">XPDevs<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="external-icon" width="12" height="12"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+      <div class="footer-col">
+        <h4>Films</h4>
+        <a href="films.html">All Films</a>
+        <a href="the-daughter-of-war.html">The Daughter of War</a>
+        <a href="the-last-light.html">The Last Light</a>
+      </div>
+      <div class="footer-col">
+        <h4>More</h4>
+        <a href="news.html">News</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 XPDevs Studio. All rights reserved.</span>
+      <div class="footer-social">
+        <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="player">
+    <button id="closePlayer">Back</button>
+  </div>
+
+  <script src="script.js"></script>
+  <script type="module">
+    import * as THREE from 'three';
+
+    const playBtn = document.getElementById('playBtn');
+    const player = document.getElementById('player');
+    const closeBtn = document.getElementById('closePlayer');
+    const body = document.body;
+
+    let playing = false;
+    let animId = null;
+    let renderer, scene, camera, clock;
+    let pointLight, flameSprite, mothGroup, lWing, rWing;
+
+    function setupScene() {
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x000000);
+      scene.fog = new THREE.FogExp2(0x000000, 0.15);
+
+      camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.set(2.2, 1.4, 3.2);
+      camera.lookAt(0, 0.6, 0);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.toneMapping = THREE.ReinhardToneMapping;
+      renderer.toneMappingExposure = 2.5;
+      player.appendChild(renderer.domElement);
+
+      clock = new THREE.Clock();
+
+      const tableMaterial = new THREE.MeshStandardMaterial({ color: 0x0a0503, roughness: 0.9 });
+      const rustMaterial = new THREE.MeshStandardMaterial({ color: 0x241109, roughness: 1.0, metalness: 0.2 });
+      const glassMaterial = new THREE.MeshPhysicalMaterial({
+        color: 0xffffff, roughness: 0.05, transmission: 0.95,
+        thickness: 0.05, transparent: true, opacity: 0.2, side: THREE.DoubleSide
+      });
+
+      const table = new THREE.Mesh(new THREE.BoxGeometry(10, 0.2, 10), tableMaterial);
+      table.position.y = -0.1;
+      table.receiveShadow = true;
+      scene.add(table);
+
+      const lantern = new THREE.Group();
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.6, 0.2, 24), rustMaterial);
+      base.position.y = 0.1;
+      base.castShadow = true;
+      lantern.add(base);
+
+      const innerGlass = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.8, 24), glassMaterial);
+      innerGlass.position.y = 0.6;
+      lantern.add(innerGlass);
+
+      const topPart = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.5, 0.3, 24), rustMaterial);
+      topPart.position.y = 1.1;
+      topPart.castShadow = true;
+      lantern.add(topPart);
+
+      for (let i = 0; i < 4; i++) {
+        const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.8, 8), rustMaterial);
+        const angle = (i / 4) * Math.PI * 2;
+        bar.position.set(Math.cos(angle) * 0.4, 0.6, Math.sin(angle) * 0.4);
+        bar.castShadow = true;
+        lantern.add(bar);
+      }
+      scene.add(lantern);
+
+      const createFlameTexture = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, 128, 128);
+        const gradOuter = ctx.createRadialGradient(64, 80, 0, 64, 80, 50);
+        gradOuter.addColorStop(0, 'rgba(255, 100, 0, 0.8)');
+        gradOuter.addColorStop(0.5, 'rgba(200, 50, 0, 0.3)');
+        gradOuter.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = gradOuter;
+        ctx.beginPath();
+        ctx.arc(64, 80, 50, 0, Math.PI * 2);
+        ctx.fill();
+        const gradInner = ctx.createRadialGradient(64, 85, 0, 64, 85, 15);
+        gradInner.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        gradInner.addColorStop(0.4, 'rgba(255, 255, 180, 1)');
+        gradInner.addColorStop(1, 'rgba(255, 180, 0, 0)');
+        ctx.fillStyle = gradInner;
+        ctx.beginPath();
+        ctx.arc(64, 85, 15, 0, Math.PI * 2);
+        ctx.fill();
+        return new THREE.CanvasTexture(canvas);
+      };
+
+      const flameTexture = createFlameTexture();
+      const flameMat = new THREE.SpriteMaterial({
+        map: flameTexture, blending: THREE.AdditiveBlending,
+        transparent: true, depthWrite: false
+      });
+
+      flameSprite = new THREE.Sprite(flameMat);
+      flameSprite.scale.set(0.4, 0.7, 1);
+      flameSprite.position.set(0, 0.5, 0);
+      flameSprite.renderOrder = 10;
+      scene.add(flameSprite);
+
+      pointLight = new THREE.PointLight(0xff6611, 8, 15, 1.8);
+      pointLight.position.set(0, 0.6, 0);
+      pointLight.castShadow = true;
+      pointLight.shadow.mapSize.width = 2048;
+      pointLight.shadow.mapSize.height = 2048;
+      pointLight.shadow.bias = -0.001;
+      scene.add(pointLight);
+
+      mothGroup = new THREE.Group();
+      const mothBody = new THREE.Mesh(
+        new THREE.BoxGeometry(0.01, 0.005, 0.03),
+        new THREE.MeshBasicMaterial({ color: 0x050505 })
+      );
+      const wingMat = new THREE.MeshBasicMaterial({
+        color: 0x999999, side: THREE.DoubleSide, transparent: true, opacity: 0.3
+      });
+      lWing = new THREE.Mesh(new THREE.PlaneGeometry(0.05, 0.04), wingMat);
+      lWing.position.x = -0.025;
+      rWing = new THREE.Mesh(new THREE.PlaneGeometry(0.05, 0.04), wingMat);
+      rWing.position.x = 0.025;
+      mothGroup.add(mothBody, lWing, rWing);
+      scene.add(mothGroup);
+    }
+
+    function disposeScene() {
+      if (renderer) {
+        renderer.dispose();
+        if (renderer.domElement && renderer.domElement.parentNode) {
+          renderer.domElement.parentNode.removeChild(renderer.domElement);
+        }
+        renderer = null;
+      }
+      scene = null;
+      camera = null;
+      clock = null;
+      pointLight = null;
+      flameSprite = null;
+      mothGroup = null;
+      lWing = null;
+      rWing = null;
+    }
+
+    const CYCLE_DURATION = 120;
+    const fps = 24;
+    const interval = 1000 / fps;
+
+    function animate(now) {
+      if (!playing) return;
+      animId = requestAnimationFrame(animate);
+
+      const delta = now - lastFrame;
+      if (delta < interval) return;
+      lastFrame = now - (delta % interval);
+
+      const time = clock.getElapsedTime();
+      const alpha = (time % CYCLE_DURATION) / CYCLE_DURATION;
+      const cycle = (Math.sin(alpha * Math.PI * 2 - Math.PI / 2) + 1) / 2;
+      const baseIntensity = 1.0 + cycle * 7.0;
+
+      const flicker = Math.sin(time * 30) * 0.2 + Math.sin(time * 15) * 0.15;
+      pointLight.intensity = baseIntensity + flicker;
+
+      const flameScaleY = (0.6 + cycle * 0.25) + (Math.sin(time * 40) * 0.1);
+      const flameScaleX = (0.35 + cycle * 0.1) + (Math.cos(time * 25) * 0.05);
+      flameSprite.scale.set(flameScaleX, flameScaleY, 1);
+      flameSprite.position.y = 0.45 + (flameScaleY * 0.2);
+      flameSprite.material.opacity = (0.7 + cycle * 0.3) * (0.85 + Math.random() * 0.15);
+
+      const radius = 0.75 + Math.sin(time * 0.8) * 0.25;
+      mothGroup.position.set(
+        Math.cos(time * 3.5) * radius,
+        0.7 + Math.sin(time * 6) * 0.25,
+        Math.sin(time * 3.5) * radius
+      );
+      mothGroup.lookAt(0, 0.7, 0);
+      lWing.rotation.z = Math.sin(time * 60) * 1.3;
+      rWing.rotation.z = -Math.sin(time * 60) * 1.3;
+
+      renderer.render(scene, camera);
+    }
+
+    let lastFrame = 0;
+
+    function startPlayer() {
+      setupScene();
+      player.classList.add('open');
+      closeBtn.classList.add('show');
+      body.classList.add('body-hidden');
+      playing = true;
+      lastFrame = performance.now();
+      clock.start();
+      animId = requestAnimationFrame(animate);
+    }
+
+    function stopPlayer() {
+      playing = false;
+      if (animId) { cancelAnimationFrame(animId); animId = null; }
+      closeBtn.classList.remove('show');
+      body.classList.remove('body-hidden');
+      disposeScene();
+      player.classList.remove('open');
+    }
+
+    playBtn.addEventListener('click', startPlayer);
+    closeBtn.addEventListener('click', stopPlayer);
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && playing) stopPlayer();
+    });
+
+    window.addEventListener('resize', () => {
+      if (camera && renderer) {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+    });
+  </script>
+</body>
+</html>
